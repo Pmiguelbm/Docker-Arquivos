@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Arquivos - Sistema de Upload{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Lista de Arquivos
+                </h5>
+                <a href="{% url 'file_upload:home' %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Voltar
+                </a>
+            </div>
+            <div class="card-body">
+                {% if files %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Arquivo</th>
+                                    <th>Tipo</th>
+                                    <th>Tamanho</th>
+                                    <th>Data de Upload</th>
+                                    <th>Descrição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file fa-lg text-primary me-2"></i>
+                                            <div>
+                                                <strong>{{ file.filename }}</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ file.file_type }}</span>
+                                    </td>
+                                    <td>{{ file.file_size|filesizeformat }}</td>
+                                    <td>{{ file.uploaded_at|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        {% if file.description %}
+                                            {{ file.description|truncatechars:50 }}
+                                        {% else %}
+                                            <span class="text-muted">Sem descrição</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ file.file.url }}" 
+                                               class="btn btn-sm btn-outline-primary"
+                                               target="_blank"
+                                               title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <a href="{% url 'file_upload:delete_file' file.id %}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('Tem certeza que deseja deletar este arquivo?')"
+                                               title="Deletar">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Total de arquivos: {{ files.count }}
+                        </small>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">Nenhum arquivo encontrado</h4>
+                        <p class="text-muted">Faça o primeiro upload para começar!</p>
+                        <a href="{% url 'file_upload:home' %}" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i>
+                            Fazer Upload
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
