@@ -160,11 +160,3 @@ python manage.py runserver
 ## 📝 Licença
 
 Este projeto é de uso educacional.
-
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
